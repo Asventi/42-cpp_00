@@ -16,6 +16,8 @@
 
 #include "PhoneBook.hpp"
 
+#include <limits>
+
 std::string	max_modifier(std::string	&str)
 {
 	std::string	new_str;

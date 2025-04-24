@@ -38,7 +38,7 @@ void	fill_contact(Contact &contact)
 int	main(int c, char **args)
 {
 	std::string	cmd;
-	PhoneBook	*phone_book;
+	PhoneBook	phone_book;
 	Contact		contact;
 
 	(void)c;
@@ -48,12 +48,12 @@ int	main(int c, char **args)
 		if (cmd == "ADD")
 		{
 			fill_contact(contact);
-			phone_book->add_contact(contact);
+			phone_book.add_contact(contact);
 			std::cout << "\nContact has been added succesfully." << std::endl;
 		}
 		else if (cmd == "SEARCH")
 		{
-			phone_book->search_contacts();
+			phone_book.search_contacts();
 		}
 		else if (cmd == "EXIT")
 			return (0);
