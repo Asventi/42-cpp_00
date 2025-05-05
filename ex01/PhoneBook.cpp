@@ -16,9 +16,7 @@
 
 #include "PhoneBook.hpp"
 
-#include <limits>
-
-std::string	max_modifier(std::string	&str)
+std::string	max_modifier(const std::string	&str)
 {
 	std::string	new_str;
 
@@ -28,8 +26,12 @@ std::string	max_modifier(std::string	&str)
 	return (new_str);
 }
 
-void	PhoneBook::add_contact(Contact &contact)
+int	PhoneBook::add_contact()
 {
+	Contact contact(_id);
+
+	if (contact.fill_contact() != 0)
+		return (1);
 	for (int i = _size; i > 0; i--)
 	{
 		if (i == 8)
@@ -37,9 +39,10 @@ void	PhoneBook::add_contact(Contact &contact)
 		else
 			_contacts[i] = _contacts[i - 1];
 	}
-	contact.id = _id++;
 	_contacts[0] = contact;
 	_size++;
+	_id++;
+	return (0);
 }
 
 void	PhoneBook::show_contacts()
@@ -49,10 +52,10 @@ void	PhoneBook::show_contacts()
 	std::cout << "\t|----------|----------|----------|----------|" << std::endl;
 	for (int i = 0; i < _size; i++)
 	{
-		std::cout << "\t|" << std::setw(10) << _contacts[i].id;
-		std::cout << "|" << std::setw(10) << max_modifier(_contacts[i].first_name);
-		std::cout << "|" << std::setw(10) << max_modifier(_contacts[i].last_name);
-		std::cout << "|" << std::setw(10) << max_modifier(_contacts[i].nickname) << "|" << std::endl;
+		std::cout << "\t|" << std::setw(10) << _contacts[i].id();
+		std::cout << "|" << std::setw(10) << max_modifier(_contacts[i].first_name());
+		std::cout << "|" << std::setw(10) << max_modifier(_contacts[i].last_name());
+		std::cout << "|" << std::setw(10) << max_modifier(_contacts[i].nickname()) << "|" << std::endl;
 	}
 	std::cout << "\t\\-------------------------------------------/" << std::endl;
 }
@@ -72,13 +75,9 @@ void	PhoneBook::search_contacts()
 	}
 	for (int i = 0; i < _size; i++)
 	{
-		if (_contacts[i].id == id)
+		if (_contacts[i].id() == id)
 		{
-			std::cout << "\tFirst Name: " << _contacts[i].first_name << std::endl;
-			std::cout << "\tLast Name: " << _contacts[i].last_name << std::endl;
-			std::cout << "\tNickame: " << _contacts[i].nickname << std::endl;
-			std::cout << "\tNumber: " << _contacts[i].number << std::endl;
-			std::cout << "\tDarkest Secret: " << _contacts[i].secret << std::endl;
+			_contacts[i].show_contact();
 			return ;
 		}
 	}

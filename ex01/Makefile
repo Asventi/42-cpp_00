@@ -40,6 +40,7 @@ SRC				=	main.cpp \
 
 # ==========LIBS / INCLUDES============ #
 
+DOCTEST		=	~/Cursus/unit_tests/
 LIBS_DIR	=	lib/
 #LIBS_PATH	=	libft/libft.a
 LIBS_PATH	=
@@ -52,14 +53,15 @@ SYS_LIBS	:=	$(addprefix -l, $(SYS_LIBS))
 INCS_DIR	=	includes/
 INCLUDES	=	$(INCS_DIR) \
 				$(addprefix $(dir $(LIBS_PATH)), $(INCS_DIR)) \
-				$(dir $(LIBS_PATH))
+				$(dir $(LIBS_PATH)) \
+				$(DOCTEST)
 
 # ===============CONFIGS=============== #
 
 CC			=	c++
 CFLAGS		+=	-Wall -Wextra -Werror -std=c++98
 CPPFLAGS	+=	$(addprefix -I, $(INCLUDES)) \
-			-MMD -MP
+			-MMD -MP -D DOCTEST_CONFIG_DISABLE
 
 LDFLAGS		+=	$(addprefix -L, $(dir $(LIBS_PATH)))
 LDLIBS		+=	$(addprefix -l, $(LIBS)) $(SYS_LIBS)
@@ -71,7 +73,7 @@ MAKEFLAGS	+=	--no-print-directory
 
 # ================MODES================ #
 
-MODES		:= debug fsanitize optimize full-optimize
+MODES		:= debug fsanitize optimize full-optimize test
 
 MODE_TRACE	:= $(BUILD_DIR).mode_trace
 LAST_MODE	:= $(shell cat $(MODE_TRACE) 2>/dev/null)
@@ -87,11 +89,13 @@ endif
 ifeq ($(MODE), debug)
 	CFLAGS = -g3 -std=c++98
 else ifeq ($(MODE), fsanitize)
-	CFLAGS = -g3 -fsanitize=address
+	CFLAGS = -g3 -fsanitize=address -std=c++98
 else ifeq ($(MODE), optimize)
 	CFLAGS += -O3
 else ifeq ($(MODE), full-optimize)
 	CFLAGS += -Ofast
+else ifeq ($(MODE), test)
+	CPPFLAGS := $(filter-out -D DOCTEST_CONFIG_DISABLE, $(CPPFLAGS))
 else ifneq ($(MODE),)
 	ERROR = MODE
 endif

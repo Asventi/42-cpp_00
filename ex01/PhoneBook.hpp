@@ -17,12 +17,11 @@
 
 class PhoneBook
 {
-private:
     Contact _contacts[8];
     int     _size;
     int     _id;
 public:
-    void    add_contact(Contact &contact);
+    int     add_contact();
     void    show_contacts();
     void    search_contacts();
     PhoneBook();

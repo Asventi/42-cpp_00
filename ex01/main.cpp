@@ -14,32 +14,10 @@
 
 #include "PhoneBook.hpp"
 
-void	get_input(std::string &dest, const char *prompt)
-{
-	while (true)
-	{
-		std::cout << prompt;
-		std::getline(std::cin, dest);
-		if (!dest.empty())
-			break ;
-		std::cout << "\t(input must not be empty)" << std::endl;
-	}
-}
-
-void	fill_contact(Contact &contact)
-{
-	get_input(contact.first_name, "\tFirst Name: ");
-	get_input(contact.last_name, "\tLast Name: ");
-	get_input(contact.nickname, "\tNickname: ");
-	get_input(contact.number, "\tPhone Number: ");
-	get_input(contact.secret, "\tYour \033[1mDarkest\033[0m Secret: ");
-}
-
 int	main(int c, char **args)
 {
 	std::string	cmd;
 	PhoneBook	phone_book;
-	Contact		contact;
 
 	(void)c;
 	(void)args;
@@ -47,8 +25,8 @@ int	main(int c, char **args)
 	{
 		if (cmd == "ADD")
 		{
-			fill_contact(contact);
-			phone_book.add_contact(contact);
+			if (phone_book.add_contact() != 0)
+				return (1);
 			std::cout << "\nContact has been added succesfully." << std::endl;
 		}
 		else if (cmd == "SEARCH")
@@ -58,4 +36,5 @@ int	main(int c, char **args)
 		else if (cmd == "EXIT")
 			return (0);
 	}
+	return (0);
 }
